@@ -1,0 +1,13 @@
+LogisticsMobile/node_modules/
+logistics-api/node_modules/
+
+LogisticsMobile/android/app/build/
+LogisticsMobile/android/.gradle/
+
+LogisticsMobile/ios/build/
+LogisticsMobile/ios/Pods/
+
+logistics-api/dist/
+
+.env
+*.log
