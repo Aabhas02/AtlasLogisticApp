@@ -11,3 +11,4 @@ logistics-api/dist/
 
 .env
 *.log
+LogisticsMobile/src/screens/Login/LoginScreen.tsx
