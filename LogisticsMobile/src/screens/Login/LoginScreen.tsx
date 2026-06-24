@@ -24,7 +24,7 @@ const LoginScreen = ({
   const handleLogin = async () => {
 
     if (!email || !password) {
-      Alert.alert('Validation', 'Please enter Email and Password');
+      Alert.alert('Validation', 'Please enter Email and and Password');
       return;
     }
 
