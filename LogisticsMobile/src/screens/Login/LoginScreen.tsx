@@ -31,7 +31,7 @@ const LoginScreen = ({
     try {
 
       const response = await fetch(
-        'http://192.168.1.205:3000/auth/login',
+        'http://192.168.1.227:3000/auth/login',
         {
           method: 'POST',
           headers: {
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: '#0066cc',
+    backgroundColor: '#28a745',
     padding: 15,
     borderRadius: 8,
   },

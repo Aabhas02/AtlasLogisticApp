@@ -24,7 +24,7 @@ const SignupScreen = ({ goToLogin }: Props) => {
     try {
 
       const response = await fetch(
-        'http://192.168.1.205:3000/auth/register',
+        'http://192.168.1.227:3000/auth/register',
         {
           method: 'POST',
           headers: {
