@@ -9,102 +9,89 @@ import {
 } from 'react-native';
 
 type Props = {
-  goToSignup: () => void;
-  goToDashboard: () => void;
+  goToLogin: () => void;
 };
 
-const LoginScreen = ({
-  goToSignup,
-  goToDashboard,
-}: Props) => {
+const SignupScreen = ({ goToLogin }: Props) => {
 
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = async () => {
-
-    if (!email || !password) {
-      Alert.alert('Validation', 'Please enter Email and Password');
-      return;
-    }
+  const handleSignup = async () => {
 
     try {
 
       const response = await fetch(
-        'http://192.168.1.205:3000/auth/login',
+        'http://192.168.1.205:3000/auth/register',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            username: email,
-            password: password,
+            username,
+            email,
+            mobile,
+            password,
           }),
         },
       );
 
       const data = await response.json();
 
-      if (data.length > 0) {
-
-       Alert.alert(
+Alert.alert(
   'Success',
-  `Welcome ${data[0].RM_UserName}`,
+  'Registration Successful',
   [
     {
       text: 'OK',
-      onPress: goToDashboard,
+      onPress: goToLogin,
     },
   ],
 );
 
-      } else {
-
-        Alert.alert(
-          'Login Failed',
-          'Invalid Username or Password',
-        );
-
-      }
-
     } catch (error) {
-
-      console.log(error);
 
       Alert.alert(
         'Error',
-        'Unable to connect to server',
+        'Registration Failed',
       );
     }
   };
-
-  // const handleSignup = () => {
-  //   Alert.alert(
-  //     'Signup',
-  //     'Open SignupScreen here'
-  //   );
-  // };
 
   return (
     <View style={styles.container}>
 
       <Text style={styles.logo}>
-        Atlas Logistics
+        Create Account
       </Text>
 
       <TextInput
         style={styles.input}
-        placeholder="Enter Username"
-        placeholderTextColor="#999"
+        placeholder="Username"
+        value={username}
+        onChangeText={setUsername}
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
         value={email}
         onChangeText={setEmail}
       />
 
       <TextInput
         style={styles.input}
-        placeholder="Enter Password"
-        placeholderTextColor="#999"
+        placeholder="Mobile"
+        value={mobile}
+        onChangeText={setMobile}
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
@@ -112,43 +99,31 @@ const LoginScreen = ({
 
       <TouchableOpacity
         style={styles.button}
-        onPress={handleLogin}
+        onPress={handleSignup}
       >
         <Text style={styles.buttonText}>
-          LOGIN
+          REGISTER
         </Text>
       </TouchableOpacity>
-
-<TouchableOpacity
-  style={styles.signupButton}
-  onPress={goToSignup}
->
-  <Text style={styles.buttonText}>
-    SIGN UP
-  </Text>
-</TouchableOpacity>
 
     </View>
   );
 };
 
-export default LoginScreen;
+export default SignupScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     padding: 25,
-    backgroundColor: '#fff',
   },
-
   logo: {
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: 'bold',
+    marginBottom: 30,
     textAlign: 'center',
-    marginBottom: 40,
   },
-
   input: {
     borderWidth: 1,
     borderColor: '#ddd',
@@ -156,20 +131,11 @@ const styles = StyleSheet.create({
     padding: 12,
     marginBottom: 15,
   },
-
   button: {
-    backgroundColor: '#0066cc',
-    padding: 15,
-    borderRadius: 8,
-  },
-
-  signupButton: {
     backgroundColor: '#28a745',
     padding: 15,
     borderRadius: 8,
-    marginTop: 10,
   },
-
   buttonText: {
     color: '#fff',
     textAlign: 'center',
