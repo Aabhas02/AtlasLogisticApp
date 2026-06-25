@@ -1,14 +1,14 @@
-LogisticsMobile/node_modules/
+atlas/node_modules/
 logistics-api/node_modules/
 
-LogisticsMobile/android/app/build/
-LogisticsMobile/android/.gradle/
+atlas/android/app/build/
+atlas/android/.gradle/
 
-LogisticsMobile/ios/build/
-LogisticsMobile/ios/Pods/
+atlas/ios/build/
+atlas/ios/Pods/
 
 logistics-api/dist/
 
 .env
 *.log
-LogisticsMobile/src/screens/Login/LoginScreen.tsx
+atlas/src/screens/Login/LoginScreen.tsx
