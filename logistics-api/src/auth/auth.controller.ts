@@ -2,13 +2,15 @@ import {
   Body,
   Controller,
   Post,
+  Get,
+  Put,
+  Param,
 } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
-
   constructor(
     private readonly authService: AuthService,
   ) {}
@@ -21,5 +23,18 @@ export class AuthController {
   @Post('login')
   login(@Body() body: any) {
     return this.authService.login(body);
+  }
+
+  @Get('profile/:id')
+  getProfile(@Param('id') id: number) {
+    return this.authService.getProfile(Number(id));
+  }
+
+  @Put('profile/:id')
+  updateProfile(
+    @Param('id') id: number,
+    @Body() body: any,
+  ) {
+    return this.authService.updateProfile(Number(id), body);
   }
 }

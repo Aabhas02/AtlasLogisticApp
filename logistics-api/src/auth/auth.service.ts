@@ -37,7 +37,7 @@ export class AuthService {
 
     return {
       success: true,
-      message: 'User Registered'
+      message: 'User Registered',
     };
   }
 
@@ -56,6 +56,62 @@ export class AuthService {
         AND RM_IsActive=1
       `);
 
-    return result.recordset;
+    if (result.recordset.length === 0) {
+      return {
+        success: false,
+        message: 'Invalid Username or Password',
+      };
+    }
+
+    return {
+      success: true,
+      user: result.recordset[0],
+    };
+  }
+
+  async getProfile(id: number) {
+
+    const pool = await getConnection();
+
+    const result = await pool.request()
+      .input('Id', sql.Int, id)
+      .query(`
+        SELECT
+          RM_PK,
+          RM_UserName,
+          RM_OfficialEmailId,
+          RM_MobileNumber,
+          RM_Address
+        FROM TblRegistrationMaster
+        WHERE RM_PK=@Id
+      `);
+
+    return result.recordset[0];
+  }
+
+  async updateProfile(id: number, body: any) {
+
+    const pool = await getConnection();
+
+    await pool.request()
+      .input('Id', sql.Int, id)
+      .input('UserName', sql.VarChar, body.username)
+      .input('Email', sql.VarChar, body.email)
+      .input('Mobile', sql.VarChar, body.mobile)
+      .input('Address', sql.VarChar, body.address)
+      .query(`
+        UPDATE TblRegistrationMaster
+        SET
+          RM_UserName=@UserName,
+          RM_OfficialEmailId=@Email,
+          RM_MobileNumber=@Mobile,
+          RM_Address=@Address
+        WHERE RM_PK=@Id
+      `);
+
+    return {
+      success: true,
+      message: 'Profile Updated Successfully',
+    };
   }
 }

@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-export default function ShipmentScreen() {
+export default function MeetingScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Shipment Screen</Text>
+      <Text style={styles.text}>Meeting Screen</Text>
     </View>
   );
 }

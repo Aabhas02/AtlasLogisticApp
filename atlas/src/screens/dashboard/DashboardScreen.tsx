@@ -1,13 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 
+// const API_URL = 'http://localhost:3000/posts';
+const API_URL = 'http://192.168.1.205:3000/posts';
+
 const DashboardScreen = () => {
+  const [posts, setPosts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadPosts();
+  }, []);
+
+  const loadPosts = async () => {
+    try {
+      const response = await fetch(API_URL);
+     const data = await response.json();
+
+console.log('Dashboard Data:', data);
+console.log('Length:', data.length);
+
+setPosts([...data]);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
 
@@ -44,24 +70,41 @@ const DashboardScreen = () => {
         </View>
       </View>
 
-      {/* Quick Actions */}
-      <Text style={styles.sectionTitle}>Quick Actions</Text>
+      {/* Latest Posts */}
+      <Text style={styles.sectionTitle}>Latest Posts</Text>
+      {/* <Text style={{ color: 'red', fontSize: 16 }}>
+  Posts Count: {posts.length}
+</Text> */}
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Create Shipment</Text>
-      </TouchableOpacity>
+      {loading ? (
+        <ActivityIndicator
+          size="large"
+          color="#0A6EBD"
+          style={{ marginTop: 20 }}
+        />
+      ) : posts.length === 0 ? (
+        <Text style={styles.emptyText}>No posts found.</Text>
+      ) : (
+        posts.map((item: any) => (
+          <View key={item.Id} style={styles.postCard}>
+            <Text style={styles.postTitle}>
+              {item.Title}
+            </Text>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>View Orders</Text>
-      </TouchableOpacity>
+            <Text style={styles.postDescription}>
+              {item.Description}
+            </Text>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Track Shipment</Text>
-      </TouchableOpacity>
+            <Text style={styles.postFooter}>
+              Posted By: {item.CreatedByName}
+            </Text>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Customers</Text>
-      </TouchableOpacity>
+            <Text style={styles.postDate}>
+              {new Date(item.CreatedDate).toLocaleString()}
+            </Text>
+          </View>
+        ))
+      )}
 
       {/* Recent Activities */}
       <Text style={styles.sectionTitle}>Recent Activities</Text>
@@ -150,18 +193,43 @@ const styles = StyleSheet.create({
     color: '#555',
   },
 
-  button: {
-    backgroundColor: '#0A6EBD',
+  postCard: {
+    backgroundColor: '#fff',
     marginHorizontal: 15,
-    marginBottom: 12,
-    padding: 15,
-    borderRadius: 10,
+    marginBottom: 15,
+    borderRadius: 12,
+    padding: 16,
+    elevation: 3,
   },
 
-  buttonText: {
-    color: '#fff',
-    textAlign: 'center',
+  postTitle: {
+    fontSize: 18,
     fontWeight: 'bold',
+    color: '#0A6EBD',
+  },
+
+  postDescription: {
+    marginTop: 8,
+    fontSize: 15,
+    color: '#555',
+  },
+
+  postFooter: {
+    marginTop: 12,
+    fontWeight: '600',
+    color: '#333',
+  },
+
+  postDate: {
+    marginTop: 4,
+    fontSize: 12,
+    color: '#888',
+  },
+
+  emptyText: {
+    textAlign: 'center',
+    marginVertical: 20,
+    color: '#777',
     fontSize: 16,
   },
 

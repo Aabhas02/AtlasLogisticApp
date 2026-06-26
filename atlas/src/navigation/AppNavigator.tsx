@@ -1,6 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import EditProfileScreen from '../screens/profile/EditProfileScreen';
+import EditCompanyScreen from '../screens/profile/EditCompanyScreen';
 import LoginScreen from '../screens/Login/LoginScreen';
 import SignupScreen from '../screens/signup/SignupScreen';
 import BottomTabNavigator from './BottomTabNavigator';
@@ -9,6 +10,8 @@ export type RootStackParamList = {
   Login: undefined;
   Signup: undefined;
   Dashboard: undefined;
+  EditProfile: undefined;
+  EditCompany: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -45,6 +48,15 @@ export default function AppNavigator() {
   options={{
     headerShown: false,
   }}
+/>
+<Stack.Screen
+    name="EditProfile"
+    component={EditProfileScreen}
+/>
+
+<Stack.Screen
+    name="EditCompany"
+    component={EditCompanyScreen}
 />
 
     </Stack.Navigator>
